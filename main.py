@@ -26,7 +26,7 @@ def main():
             if event.type == pygame.QUIT:
                 return
         player.update(dt)
-        pygame.Surface.fill(screen, (0, 0, 0))
+        screen.fill((0, 0, 0))
         player.draw(screen)
         pygame.display.flip()
         dt = clock.tick(max_fps) / millsec_per_sec
