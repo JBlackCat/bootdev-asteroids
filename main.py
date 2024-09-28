@@ -18,6 +18,9 @@ def main():
     dt = 0
     max_fps = 60
     millsec_per_sec = 1000
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
     player = Player(SCREEN_CENTER_PT[0], SCREEN_CENTER_PT[1], PLAYER_RADIUS)
 
     # game loop
@@ -25,9 +28,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        player.update(dt)
+        for entity in updatable:
+            entity.update(dt)
+
         screen.fill((0, 0, 0))
-        player.draw(screen)
+
+        for entity in drawable:
+            entity.draw(screen)
+
         pygame.display.flip()
         dt = clock.tick(max_fps) / millsec_per_sec
         # print(f"Delta Time(sec): {dt}")
