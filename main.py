@@ -13,7 +13,7 @@ def main():
     print(f"Screen Center X: {SCREEN_CENTER_PT[0]}")
     print(f"Screen Center Y: {SCREEN_CENTER_PT[1]}")
 
-    screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_WIDTH])
+    screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
     clock = pygame.time.Clock()
     dt = 0
     max_fps = 60
