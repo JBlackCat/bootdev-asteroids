@@ -1,5 +1,6 @@
 import pygame
 from circleshape import CircleShape
+from constants import PLAYER_TURN_SPEED
 
 
 class Player(CircleShape):
@@ -19,6 +20,9 @@ class Player(CircleShape):
 
         return [a, b, c]
 
+    def rotate(self, dt):
+        self.rotation += PLAYER_TURN_SPEED * dt
+
     def draw(self, screen):
         PLAYER_COLOR = (255, 255, 255)
         LINE_WIDTH = 2
@@ -26,3 +30,16 @@ class Player(CircleShape):
         # collision bounding box
         # pygame.draw.circle(screen, DEBUG_COLOR, self.position, self.radius, LINE_WIDTH)
         pygame.draw.polygon(screen, PLAYER_COLOR, self.triangle(), LINE_WIDTH)
+
+    def update(self, dt):
+        # unfortunately this is only working on the lap top keyboard,
+        # but not on custom keyboard connected by usb to thunderbolt dock
+        # TODO: figure out issue with external keyboard
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            # print("pressed a")
+            self.rotate(dt * -1)
+        if keys[pygame.K_d]:
+            # print("pressed d")
+            self.rotate(dt)
