@@ -1,6 +1,12 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_TURN_SPEED, PLAYER_SPEED, SHOT_RADIUS, SHOT_SPEED
+from constants import (
+    PLAYER_TURN_SPEED,
+    PLAYER_SPEED,
+    PLAYER_SHOOT_COOLDOWN,
+    SHOT_RADIUS,
+    SHOT_SPEED,
+)
 from shot import Shot
 
 
@@ -10,6 +16,7 @@ class Player(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         self.rotation = 0
+        self.shoot_cooldown = 0
         # print(f"PLAYER_INIT")
         # print(f"PLAYER_X: {self.position[0]}")
         # print(f"PLAYER_Y: {self.position[1]}")
@@ -31,10 +38,14 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * dt
 
     def shoot(self):
+        if self.shoot_cooldown > 0:
+            return
+
         shot = Shot(self.position[0], self.position[1], SHOT_RADIUS)
         # align shot direction with player
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
         shot.velocity *= SHOT_SPEED
+        self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN
 
     def draw(self, screen):
         PLAYER_COLOR = (255, 255, 255)
@@ -45,6 +56,8 @@ class Player(CircleShape):
         pygame.draw.polygon(screen, PLAYER_COLOR, self.triangle(), LINE_WIDTH)
 
     def update(self, dt):
+        self.shoot_cooldown -= dt
+
         # unfortunately this is only working on the lap top keyboard,
         # but not on custom keyboard connected by usb to thunderbolt dock
         # TODO: figure out issue with external keyboard
