@@ -1,5 +1,5 @@
 import pygame
-import asteroid
+import sys
 from constants import *
 from player import Player
 from asteroid import Asteroid
@@ -40,6 +40,11 @@ def main():
                 return
         for entity in updatable:
             entity.update(dt)
+
+        for asteroid in asteroids:
+            if asteroid.has_collided_with(player):
+                print("Game over!")
+                sys.exit()
 
         screen.fill((0, 0, 0))
 
